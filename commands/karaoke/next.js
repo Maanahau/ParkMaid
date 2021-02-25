@@ -1,12 +1,12 @@
 const { Command } = require('discord.js-commando');
-const Karaoke = require('../../resources/karaoke.js');
+const Karaoke = require('../../lib/karaoke.js');
 
 module.exports = class NextCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'next',
 			aliases: ['n'],
-			group: 'karaoke',
+			group: 'karaoke_host',
 			memberName: 'next',
 			description: 'Shift forward the current queue.',
             guildOnly: true,

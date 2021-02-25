@@ -1,12 +1,12 @@
 const { Command } = require('discord.js-commando');
-const Karaoke = require('../../resources/karaoke.js');
+const Karaoke = require('../../lib/karaoke.js');
 
 module.exports = class AddCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'add',
 			aliases: ['a'],
-			group: 'karaoke',
+			group: 'karaoke_host',
 			memberName: 'add',
 			description: 'Add user to the queue.',
             guildOnly: true,
@@ -27,7 +27,7 @@ module.exports = class AddCommand extends Command {
                     type: 'string',
                     default: 'bottom',
                     validate: position => { 
-                        if(position === 'once' || position === 'top' || position === 'bottom' || (!isNaN(position) && position > 0)) 
+                        if(['once', 'top', 'bottom'].includes(position) || (!isNaN(position) && position > 0)) 
                             return true;
                         return false;
                     },

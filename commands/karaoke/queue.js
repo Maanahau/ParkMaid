@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const { Command } = require('discord.js-commando');
-const Karaoke = require('../../resources/karaoke.js');
+const Karaoke = require('../../lib/karaoke.js');
 
 module.exports = class QueueCommand extends Command {
 	constructor(client) {

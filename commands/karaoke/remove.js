@@ -1,12 +1,12 @@
 const { Command } = require('discord.js-commando');
-const Karaoke = require('../../resources/karaoke.js');
+const Karaoke = require('../../lib/karaoke.js');
 
 module.exports = class RemoveCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'remove',
 			aliases: ['r'],
-			group: 'karaoke',
+			group: 'karaoke_host',
 			memberName: 'remove',
 			description: 'Remove the current karaoke session.',
             guildOnly: true,

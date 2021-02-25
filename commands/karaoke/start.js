@@ -1,16 +1,15 @@
 const { Command } = require('discord.js-commando');
-const Karaoke = require('../../resources/karaoke.js');
+const Karaoke = require('../../lib/karaoke.js');
 
 module.exports = class StartCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'start',
 			aliases: ['s'],
-			group: 'karaoke',
+			group: 'karaoke_host',
 			memberName: 'start',
 			description: 'Start a new karaoke session.',
             guildOnly: true,
-            userPermissions: ['MANAGE_GUILD'],
             throttling:{
                 usages: 2,
                 duration: 10,

@@ -18,6 +18,8 @@
   "homepage": "https://github.com/Waldinflesh/ParkMaid#readme",
   "dependencies": {
     "discord.js": "^12.5.1",
-    "discord.js-commando": "^0.12.2"
+    "discord.js-commando": "^0.12.2",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.5.0"
   }
 }

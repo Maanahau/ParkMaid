@@ -1,16 +1,15 @@
 const { Command } = require('discord.js-commando');
-const Karaoke = require('../../resources/karaoke.js');
+const Karaoke = require('../../lib/karaoke.js');
 
 module.exports = class EndCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'end',
 			aliases: ['e'],
-			group: 'karaoke',
+			group: 'karaoke_host',
 			memberName: 'end',
 			description: 'Stop the current karaoke session.',
             guildOnly: true,
-            userPermissions: ['MANAGE_GUILD'],
             throttling:{
                 usages: 2,
                 duration: 10,

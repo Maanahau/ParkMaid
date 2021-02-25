@@ -1,12 +1,12 @@
 const { Command } = require('discord.js-commando');
-const Karaoke = require('../../resources/karaoke.js');
+const Karaoke = require('../../lib/karaoke.js');
 
 module.exports = class TransferCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'transfer',
 			aliases: ['t'],
-			group: 'karaoke',
+			group: 'karaoke_host',
 			memberName: 'transfer',
 			description: 'Transfer the current karaoke session to another host.',
             guildOnly: true,

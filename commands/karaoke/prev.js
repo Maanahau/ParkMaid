@@ -1,12 +1,12 @@
 const { Command } = require('discord.js-commando');
-const Karaoke = require('../../resources/karaoke.js');
+const Karaoke = require('../../lib/karaoke.js');
 
 module.exports = class PrevCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'prev',
 			aliases: ['p'],
-			group: 'karaoke',
+			group: 'karaoke_host',
 			memberName: 'prev',
 			description: 'Shift backward the current queue.',
             guildOnly: true,
