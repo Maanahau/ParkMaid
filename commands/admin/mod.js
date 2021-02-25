@@ -14,7 +14,14 @@ module.exports = class ModCommand extends Command {
                 usages: 2,
                 duration: 10,
             },
+            argsPromptLimit: 0,
             args:[
+                {
+                    key: 'op',
+                    prompt: 'operation to be executed',
+                    type: 'string',
+                    oneOf: ['add','remove'],
+                },
                 {
                     key: 'role',
                     prompt: 'role',
@@ -24,25 +31,46 @@ module.exports = class ModCommand extends Command {
 		});
 	}
 
-    async run(message, {role}){
-        try{
+    async run(message, {op, role}){
+        if(op === 'add'){
+            try{
+                const guild = await database.guild.findOne({
+                    where:{
+                        discordid:message.guild.id,
+                    },
+                });
+                let newMod = await database.modRole.create({
+                    discordid:role.id,
+                    guildId:guild.id,
+                });
+                database.guildCache[guild.discordid].modRoles.push(newMod.discordid);
+                return message.say('Role set as moderator.');
+            }catch(error){
+                if(error.name === 'SequelizeUniqueConstraintError'){
+                    return message.say('This role is already a moderator.');
+                }
+                return console.log(error);
+            }
+        }else if(op === 'remove'){
             const guild = await database.guild.findOne({
                 where:{
                     discordid:message.guild.id,
                 },
             });
-            let newMod = await database.modRole.create({
-                discordid:role.id,
-                guildId:guild.id,
+            const removedModRole = await database.modRole.destroy({
+                where:{
+                    discordid:role.id,
+                    guildId:guild.id,
+                },
             });
-            database.guildCache[guild.discordid].modRoles.push(newMod.discordid);
+            let index = database.guildCache[guild.discordid].modRoles.indexOf(removedModRole.discordid);
+            database.guildCache[guild.discordid].modRoles.splice(index, 1);
             console.log(database.guildCache[guild.discordid]);
-            return message.say('Role set as moderator.');
-        }catch(error){
-            if(error.name === 'SequelizeUniqueConstraintError'){
-                return message.say('This role is already a moderator.');
+            if(removedModRole){
+                return message.say('Moderator role removed.');
+            }else{
+                return message.say('This role is not a moderator.');
             }
-            return console.log(error);
         }
     }
 };

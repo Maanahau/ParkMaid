@@ -16,6 +16,7 @@ client.registry
 	.registerGroups([
 		['admin', 'admin'],
 		['karaoke', 'karaoke'],
+        ['karaoke_host', 'karaoke_host'],
 	])
 	.registerDefaultGroups()
 	.registerDefaultCommands({
@@ -25,15 +26,36 @@ client.registry
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.dispatcher.addInhibitor(message => {
-    //user needs to have a mod role, except for ?mod and ?unmod, which need MANAGE_GUILD permission
-    if(message.command.group.name === 'admin' && !(['mod','unmod'].includes(message.command.name))){
+    //check if user has a mod role
+    let isMod = false;
+    modLoop: 
         for(let role of message.member.roles.cache.array()){
             for(modRole of database.guildCache[message.guild.id].modRoles){
-                if(modRole === role.id)
-                    return false;
+                if(modRole === role.id){
+                    isMod = true;
+                    break modLoop;
+                }
             }
         }
-        return 'not mod';
+    //group-related role check
+    switch(message.command.group.name){
+        case 'admin':
+            //user needs a mod role, except for ?mod and ?unmod, which need MANAGE_GUILD permission
+            if(message.command.name !== 'mod')
+                return isMod ? false : 'not mod';
+            return false;
+
+        default:
+            //user needs a role allowed to use the requested group
+            let allowedRoles = database.guildCache[message.guild.id].allowedRoles;
+            for(let role of message.member.roles.cache.array()){
+                for(let allowedRole of allowedRoles){
+                    if(allowedRole[0] === role.id && allowedRole[1] === message.command.group.name)
+                        return false;
+                }
+            }
+            return 'role not allowed';
+
     }
 });
 
