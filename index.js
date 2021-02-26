@@ -10,6 +10,7 @@ const client = new Commando.CommandoClient({
     nonCommandEditable: false,
     commandEditableDuration: 0,
 });
+module.exports.client = client;
 
 client.registry
 	.registerDefaultTypes()
@@ -37,30 +38,35 @@ client.dispatcher.addInhibitor(message => {
                 }
             }
         }
-    //group-related role check
-    switch(message.command.group.name){
-        case 'admin':
-            //user needs a mod role, except for ?mod and ?unmod, which need MANAGE_GUILD permission
-            if(message.command.name !== 'mod')
-                return isMod ? false : 'not mod';
-            return false;
-
-        default:
-            //user needs a role allowed to use the requested group
-            let allowedRoles = database.guildCache[message.guild.id].allowedRoles;
-            for(let role of message.member.roles.cache.array()){
-                for(let allowedRole of allowedRoles){
-                    if(allowedRole[0] === role.id && allowedRole[1] === message.command.group.name)
-                        return false;
-                }
-            }
-            return 'role not allowed';
-
+    //mods can use every command everywhere
+    if(isMod) return false;
+    //role check
+    let isRoleAllowed = false;
+    if(message.command.group.name === 'admin'){
+        return message.command.name === 'mod' ? false : 'not_mod';
     }
-});
+    let allowedRoles = database.guildCache[message.guild.id].allowedRoles;
+    for(let role of message.member.roles.cache.array()){
+        if(allowedRoles[role.id] && allowedRoles[role.id].includes(message.command.group.name))
+            isRoleAllowed = true;
+    }
+    if(!isRoleAllowed)
+        return 'no_role';
+
+    //channel check
+    let isChannelAllowed = false;
+    let allowedChannels = database.guildCache[message.guild.id].allowedChannels;
+    if(allowedChannels[message.channel.id] && allowedChannels[message.channel.id].includes(message.command.group.name))
+        isChannelAllowed = true;
+    if(!isChannelAllowed)
+        return 'no_channel';
+    return false;
+
+})
+
 
 client.once('ready', async () => {
-    await database.sync();
+    await database.syncdb(client);
     console.log(`Logged in as ${client.user.tag}.`);
     client.user.setActivity('Karaoke');
 
@@ -79,6 +85,7 @@ client.once('ready', async () => {
             console.log(`Guild ${guild.id} added to database`);
         }
     }
+
     //build guilds cache
     for(let guild of knownGuilds){
         database.guildCache[guild.discordid] = new database.guildCacheRecord(guild);

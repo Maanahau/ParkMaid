@@ -1,13 +1,13 @@
 const { Command } = require('discord.js-commando');
 const database = require('../../lib/database.js');
 
-module.exports = class AllowroleCommand extends Command {
+module.exports = class AllowchannelCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'allowrole',
+			name: 'allowchannel',
 			group: 'admin',
-			memberName: 'allowrole',
-			description: 'Allow group of commands for @role.',
+			memberName: 'allowchannel',
+			description: 'Allow group of commands for #channel.',
             guildOnly: true,
             throttling:{
                 usages: 2,
@@ -24,9 +24,9 @@ module.exports = class AllowroleCommand extends Command {
                     oneOf: ['add','remove'],
                 },
                 {
-                    key: 'role',
-                    prompt: 'target to which the given group must be allowed',
-                    type: 'role',
+                    key: 'channel',
+                    prompt: 'channel into which the given group must be allowed',
+                    type: 'channel',
                 },
                 {
                     key: 'group',
@@ -37,9 +37,9 @@ module.exports = class AllowroleCommand extends Command {
 		});
 	}
 
-    async run(message, {op, role, group}){
+    async run(message, {op, channel, group}){
         if(group.name === 'admin'){
-            return message.say('Only mods can use commands from the ``admin`` group. Use the ``mod`` command to set mod roles.');
+            return message.say('Commands from the ``admin`` group can be used everywhere.');
         }
 
         const guild = await database.guild.findOne({
@@ -52,62 +52,62 @@ module.exports = class AllowroleCommand extends Command {
                 name:group.name,
             },
         });
-        const allowedRoles = database.guildCache[message.guild.id].allowedRoles;
+        const allowedChannels = database.guildCache[message.guild.id].allowedChannels;
 
         if(op === 'add'){
             try{
-                if(allowedRoles[role.id] && allowedRoles[role.id].includes(group.name))
-                    return message.say(`Role \`\`${role.name}\`\` is already allowed to use \`\`${group.name}\`\` commands.`);
+                if(allowedChannels[channel.id] && allowedChannels[channel.id].includes(group.name))
+                    return message.say(`\`\`${group.name}\`\` commands are already allowed in <#${channel.id}>.`)
 
                 //cache
-                if(!allowedRoles[role.id])
-                    allowedRoles[role.id] = new Array();
-                allowedRoles[role.id].push(group.name);
+                if(!allowedChannels[channel.id])
+                    allowedChannels[channel.id] = new Array();
+                allowedChannels[channel.id].push(group.name);
                 //database
-                let newRole = await database.allowedRole.create({
-                    discordid:role.id,
+                let newChannel = await database.allowedChannel.create({
+                    discordid:channel.id,
                     guildId:guild.id,
                 });
-                await newRole.addCommandGroup(commandGroup);
-                console.log(allowedRoles);
-                return message.say(`Role \`\`${role.name}\`\` is now allowed to use \`\`${group.name}\`\` commands.`);
+                await newChannel.addCommandGroup(commandGroup);
+                console.log(allowedChannels);
+                return message.say(`\`\`${group.name}\`\` commands are now allowed in <#${channel.id}>.`);
 
             }catch(error){ 
                 return console.log(error);
             }
         }else if(op === 'remove'){
             try{
-                if(!allowedRoles[role.id])
+                if(!allowedChannels[channel.id])
                     return message.say(`Nothing to remove.`);
 
-                if(!allowedRoles[role.id].includes(group.name)){
+                if(!allowedChannels[channel.id].includes(group.name)){
                     return message.say(`Nothing to remove.`);
                 }else{
                     //cache
-                    allowedRoles[role.id].splice(allowedRoles[role.id].indexOf(group.name), 1);
+                    allowedChannels[channel.id].splice(allowedChannels[channel.id].indexOf(group.name), 1);
                     //database
-                    let targetRole = await database.allowedRole.findOne({
+                    let targetChannel = await database.allowedChannel.findOne({
                         where:{
                             discordid:role.id,
                             guildId:guild.id,
                         },
                     });
-                    await targetRole.removeCommandGroup(commandGroup);
+                    await targetChannel.removeCommandGroup(commandGroup);
 
                     //remove role from allowedRoles if no permissions
-                    if(allowedRoles[role.id].length === 0){
+                    if(allowedChannel[channel.id].length === 0){
                         //cache
-                        delete allowedRoles[role.id];
+                        delete allowedChannels[channel.id];
                         //database
-                        await database.allowedRole.destroy({
+                        await database.allowedChannel.destroy({
                             where:{
                                 discordid:role.id,
                                 guildId:guild.id,
                             },
                         });
                     }
-                    console.log(allowedRoles);
-                    return message.say(`Role \`\`${role.name}\`\` is not allowed to use \`\`${group.name}\`\` commands anymore.`);
+                    console.log(allowedChannels);
+                    return message.say(`\`\`${group.name}\`\` commands are not allowed in <#${channel.id}> anymore.`);
                 }
             }catch(error){
                 console.log(error);
