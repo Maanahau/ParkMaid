@@ -8,7 +8,7 @@ module.exports = class AddCommand extends Command {
 			aliases: ['a'],
 			group: 'karaoke_host',
 			memberName: 'add',
-			description: 'Add user to the queue.',
+			description: 'Add @user to the queue.',
             guildOnly: true,
             throttling:{
                 usages: 2,
@@ -18,12 +18,16 @@ module.exports = class AddCommand extends Command {
             args:[
                 {
                     key: 'user',
-                    prompt: 'user',
+                    prompt: 'User to be added to the queue.',
                     type: 'member',
+                    validate: user => {
+                        if(user.bot) return false;
+                        return true;
+                    },
                 },
                 {
                     key: 'position',
-                    prompt: 'position',
+                    prompt: 'Position where you want to add @user. Can be `top`, `bottom` or a number.',
                     type: 'string',
                     default: 'bottom',
                     validate: position => { 
@@ -34,7 +38,7 @@ module.exports = class AddCommand extends Command {
                 }, 
                 {
                     key: 'noloop',
-                    prompt: 'once',
+                    prompt: 'Whether or not @user will be kept in queue after their turn. Type `once` to add @user for a single song.',
                     type: 'string',
                     default: '',
                     validate: noloop => {

@@ -14,6 +14,10 @@ module.exports = class StartCommand extends Command {
                 usages: 2,
                 duration: 10,
             },
+            validate: user => {
+                if(user.bot) return false;
+                return true;
+            },
 		});
 	}
 

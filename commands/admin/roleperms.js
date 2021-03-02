@@ -4,9 +4,9 @@ const database = require('../../lib/database.js');
 module.exports = class AllowroleCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'allowrole',
+			name: 'roleperms',
 			group: 'admin',
-			memberName: 'allowrole',
+			memberName: 'roleperms',
 			description: 'Allow group of commands for @role.',
             guildOnly: true,
             throttling:{
@@ -19,18 +19,18 @@ module.exports = class AllowroleCommand extends Command {
             args:[
                 {
                     key:'op',
-                    prompt: 'operation to be executed',
+                    prompt: 'Operation to be executed. Can be `add` or `remove`.',
                     type: 'string',
                     oneOf: ['add','remove'],
                 },
                 {
                     key: 'role',
-                    prompt: 'target to which the given group must be allowed',
+                    prompt: 'Role to be managed.',
                     type: 'role',
                 },
                 {
                     key: 'group',
-                    prompt: 'group to allow for the target',
+                    prompt: 'Group to be allowed for @role.',
                     type: 'group',
                 },
             ],
@@ -57,7 +57,7 @@ module.exports = class AllowroleCommand extends Command {
         if(op === 'add'){
             try{
                 if(allowedRoles[role.id] && allowedRoles[role.id].includes(group.name))
-                    return message.say(`Role \`\`${role.name}\`\` is already allowed to use \`\`${group.name}\`\` commands.`);
+                    return message.say(`Role \`${role.name}\` is already allowed to use \`${group.name}\` commands.`);
 
                 //cache
                 if(!allowedRoles[role.id])
@@ -69,8 +69,7 @@ module.exports = class AllowroleCommand extends Command {
                     guildId:guild.id,
                 });
                 await newRole.addCommandGroup(commandGroup);
-                console.log(allowedRoles);
-                return message.say(`Role \`\`${role.name}\`\` is now allowed to use \`\`${group.name}\`\` commands.`);
+                return message.say(`Role \`${role.name}\` is now allowed to use \`${group.name}\` commands.`);
 
             }catch(error){ 
                 return console.log(error);
@@ -95,7 +94,7 @@ module.exports = class AllowroleCommand extends Command {
                     await targetRole.removeCommandGroup(commandGroup);
 
                     //remove role from allowedRoles if no permissions
-                    if(allowedRoles[role.id].length === 0){
+                    if(!allowedRoles[role.id].length){
                         //cache
                         delete allowedRoles[role.id];
                         //database
@@ -106,8 +105,7 @@ module.exports = class AllowroleCommand extends Command {
                             },
                         });
                     }
-                    console.log(allowedRoles);
-                    return message.say(`Role \`\`${role.name}\`\` is not allowed to use \`\`${group.name}\`\` commands anymore.`);
+                    return message.say(`Role \`${role.name}\` is not allowed to use \`${group.name}\` commands anymore.`);
                 }
             }catch(error){
                 console.log(error);

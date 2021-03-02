@@ -5,7 +5,6 @@ module.exports = class EndCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'end',
-			aliases: ['e'],
 			group: 'karaoke_host',
 			memberName: 'end',
 			description: 'Stop the current karaoke session.',

@@ -18,13 +18,13 @@ module.exports = class ModCommand extends Command {
             args:[
                 {
                     key: 'op',
-                    prompt: 'operation to be executed',
+                    prompt: 'Operation to be executed. Can be `add` or `remove`.',
                     type: 'string',
                     oneOf: ['add','remove'],
                 },
                 {
                     key: 'role',
-                    prompt: 'role',
+                    prompt: 'Role that you want to add/remove from mod list.',
                     type: 'role',
                 },
             ],
@@ -65,7 +65,6 @@ module.exports = class ModCommand extends Command {
             });
             let index = database.guildCache[guild.discordid].modRoles.indexOf(removedModRole.discordid);
             database.guildCache[guild.discordid].modRoles.splice(index, 1);
-            console.log(database.guildCache[guild.discordid]);
             if(removedModRole){
                 return message.say('Moderator role removed.');
             }else{

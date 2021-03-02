@@ -4,10 +4,10 @@ const database = require('../../lib/database.js');
 module.exports = class AllowchannelCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'allowchannel',
+			name: 'channelperms',
 			group: 'admin',
-			memberName: 'allowchannel',
-			description: 'Allow group of commands for #channel.',
+			memberName: 'channelperms',
+			description: 'Allow a group of commands to be used in #channel.',
             guildOnly: true,
             throttling:{
                 usages: 2,
@@ -19,18 +19,18 @@ module.exports = class AllowchannelCommand extends Command {
             args:[
                 {
                     key:'op',
-                    prompt: 'operation to be executed',
+                    prompt: 'Operation to be executed. Can be `add` or `remove`.',
                     type: 'string',
                     oneOf: ['add','remove'],
                 },
                 {
                     key: 'channel',
-                    prompt: 'channel into which the given group must be allowed',
+                    prompt: 'Channel to be managed.',
                     type: 'channel',
                 },
                 {
                     key: 'group',
-                    prompt: 'group to allow for the target',
+                    prompt: 'Group to be allowed in #channel.',
                     type: 'group',
                 },
             ],
@@ -57,7 +57,7 @@ module.exports = class AllowchannelCommand extends Command {
         if(op === 'add'){
             try{
                 if(allowedChannels[channel.id] && allowedChannels[channel.id].includes(group.name))
-                    return message.say(`\`\`${group.name}\`\` commands are already allowed in <#${channel.id}>.`)
+                    return message.say(`\`${group.name}\` commands are already allowed in <#${channel.id}>.`)
 
                 //cache
                 if(!allowedChannels[channel.id])
@@ -69,8 +69,7 @@ module.exports = class AllowchannelCommand extends Command {
                     guildId:guild.id,
                 });
                 await newChannel.addCommandGroup(commandGroup);
-                console.log(allowedChannels);
-                return message.say(`\`\`${group.name}\`\` commands are now allowed in <#${channel.id}>.`);
+                return message.say(`\`${group.name}\` commands are now allowed in <#${channel.id}>.`);
 
             }catch(error){ 
                 return console.log(error);
@@ -88,26 +87,25 @@ module.exports = class AllowchannelCommand extends Command {
                     //database
                     let targetChannel = await database.allowedChannel.findOne({
                         where:{
-                            discordid:role.id,
+                            discordid:channel.id,
                             guildId:guild.id,
                         },
                     });
                     await targetChannel.removeCommandGroup(commandGroup);
 
                     //remove role from allowedRoles if no permissions
-                    if(allowedChannel[channel.id].length === 0){
+                    if(!allowedChannels[channel.id].length){
                         //cache
                         delete allowedChannels[channel.id];
                         //database
                         await database.allowedChannel.destroy({
                             where:{
-                                discordid:role.id,
+                                discordid:channel.id,
                                 guildId:guild.id,
                             },
                         });
                     }
-                    console.log(allowedChannels);
-                    return message.say(`\`\`${group.name}\`\` commands are not allowed in <#${channel.id}> anymore.`);
+                    return message.say(`\`${group.name}\` commands are not allowed in <#${channel.id}> anymore.`);
                 }
             }catch(error){
                 console.log(error);

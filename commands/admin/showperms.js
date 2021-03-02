@@ -5,10 +5,10 @@ const database = require('../../lib/database.js');
 module.exports = class ShowCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'show',
+			name: 'showperms',
 			group: 'admin',
-			memberName: 'show',
-			description: 'Show server settings for mods|roles|channels.',
+			memberName: 'showperms',
+			description: 'Show permissions for mods|roles|channels.',
             guildOnly: true,
             throttling:{
                 usages: 2,
@@ -18,7 +18,7 @@ module.exports = class ShowCommand extends Command {
             args:[
                 {
                     key: 'category',
-                    prompt: 'category',
+                    prompt: 'Category of permissions that you want to see. Can be `mods`, `roles` or `channels`.',
                     type: 'string',
                     oneOf: ['mods','roles','channels']
                 },
@@ -50,7 +50,7 @@ module.exports = class ShowCommand extends Command {
                     for(let id of roleIds){
                         field += `**Permissions for ** <@&${id}>\n`;
                         for(let group of allowedRoles[id]){
-                            field += `\`\`${group}\`\`\n`;
+                            field += `\`${group}\`\n`;
                         }
                         field += '\n';
                     }
@@ -66,7 +66,7 @@ module.exports = class ShowCommand extends Command {
                     for(let id of channelIds){
                         field += `**Permissions for ** <#${id}>\n`;
                         for(let group of allowedChannels[id]){
-                            field += `\`\`${group}\`\`\n`;
+                            field += `\`${group}\`\n`;
                         }
                         field += '\n';
                     }

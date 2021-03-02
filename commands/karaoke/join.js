@@ -18,7 +18,7 @@ module.exports = class JoinCommand extends Command {
             args:[
                 {
                     key: 'once',
-                    prompt: 'Use `?join once` to join for just a song.',
+                    prompt: 'Whether or not you want to join for a single song. Type `once` at the end of command to get in queue for a single song.',
                     type: 'string',
                     default: '',
                     validate: once => {

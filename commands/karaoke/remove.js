@@ -18,8 +18,12 @@ module.exports = class RemoveCommand extends Command {
             args:[
                 {
                     key: 'user',
-                    prompt: 'User to be removed',
-                    type: 'user',
+                    prompt: 'User to be removed for the queue.',
+                    type: 'user', 
+                    validate: user => {
+                        if(user.bot) return false;
+                        return true;
+                    },
                 },
             ],
 		});

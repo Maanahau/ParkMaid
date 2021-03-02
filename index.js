@@ -27,6 +27,9 @@ client.registry
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.dispatcher.addInhibitor(message => {
+    //block commands in dms
+    if(message.channel.type === 'dm')
+        return 'dm_channel';
     //check if user has a mod role
     let isMod = false;
     modLoop: 
@@ -92,16 +95,49 @@ client.once('ready', async () => {
         await database.guildCache[guild.discordid].asyncConstructor(guild);
     }
     console.log(`Guild cache ready`);
+    console.log(`Bot is ready.`);
 });
 
 client.on('guildCreate', async guild =>{
-    let newGuild = await database.guild.create({
-        discordid:guild.id,
+    //database
+    try{
+        let newGuild = await database.guild.create({
+            discordid:guild.id,
+        });
+        //cache
+        database.guildCache[newGuild.discordid] = new database.guildCacheRecord(newGuild);
+        await database.guildCache[newGuild.discordid].asyncConstructor(newGuild);
+        console.log(`Guild ${newGuild.discordid} added to database`);
+    }catch(error){
+        console.log(error);
+    }
+});
+
+client.on('guildDelete', async guild => {
+    //database
+    try{
+        let oldGuild = await database.guild.destroy({
+            where:{
+                discordid:guild.id,
+            },
+        });
+        //cache
+        delete database.guildCache[oldGuild.id];
+        console.log(`Guild ${guild.id} removed from database.`);
+    }catch(error){
+        console.log(error);
+    }
+});
+
+client.on('commandPrefixChange', async (guild, prefix) => {
+    //cache
+    database.guildCache[guild.id].prefix = prefix;
+    //database
+    database.guild.update({prefix:prefix}, {
+        where:{
+            discordid:guild.id,
+        }
     });
-    database.guildCache[newGuild.discordid] = new database.guildCacheRecord(newGuild);
-    await database.guildCache[newGuild.discordid].asyncConstructor(newGuild);
-    console.log(`Guild ${newGuild.id} added to database`);
-    console.log(database.guildCache[newGuild.discordid]);
 });
 
 client.on('error', console.error);

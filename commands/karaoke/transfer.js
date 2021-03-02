@@ -17,7 +17,7 @@ module.exports = class TransferCommand extends Command {
             args:[
                 {
                     key: 'user',
-                    prompt: 'User to make host',
+                    prompt: 'New karaoke host.',
                     type: 'user',
                 }
             ],
