@@ -37,10 +37,10 @@ Your bot has no permissions set at the moment. The first thing you want to do is
 |Command|Description|Example|
 |-------|-----------|-------|
 |`?prefix <newprefix>`|Change prefix to `newprefix`.|
-|`?showperms <mods|roles|channels>`|Show current permissions.|`?showperms mods`|
-|`?mod <add|remove> <@role>`|Give or revoke moderator permissions to `@role`.|`?mod remove 'New Member'`|
-|`?roleperms <add|remove> <@role> <group>`|Give or revoke permission to use `group` commands to `@role`.|`?roleperms add Member karaoke`|
-|`?channelperms <add|remove> <#channel> <group>`|Give or revoke permission to use `group` commands in `#channel`.|`?channelperms add #bots karaoke`|
+|`?showperms <mods\|roles\|channels>`|Show current permissions.|`?showperms mods`|
+|`?mod <add\|remove> <@role>`|Give or revoke moderator permissions to `@role`.|`?mod remove 'New Member'`|
+|`?roleperms <add\|remove> <@role> <group>`|Give or revoke permission to use `group` commands to `@role`.|`?roleperms add Member karaoke`|
+|`?channelperms <add\|remove> <#channel> <group>`|Give or revoke permission to use `group` commands in `#channel`.|`?channelperms add #bots karaoke`|
 
 ### Command groups
 |Group|Description|
@@ -60,9 +60,9 @@ Your bot has no permissions set at the moment. The first thing you want to do is
 ## Karaoke Host commands
 |Command|Description|Example|
 |-|-|-|
-|`?start`|Start a karaoke session.|
-|`?end`|Stop the current karaoke session.|
-|`?add <@user> [top|bottom|number] [once]`|Add `@user` to the queue. If a position is not given, they will be placed at the bottom. Using `?add` on a user already in queue will result in the user being moved to the given position.|`?add @Waldinflesh 5 once`|
+|`?start`|Start a karaoke session.| |
+|`?end`|Stop the current karaoke session.| |
+|`?add <@user> [top\|bottom\|number] [once]`|Add `@user` to the queue. If a position is not given, they will be placed at the bottom. Using `?add` on a user already in queue will result in the user being moved to the given position.|`?add @Waldinflesh 5 once`|
 |`?remove <@user>`|Remove `@user` from the queue.|`?remove @Waldinflesh`|
 |`?next`|Shift queue forward by 1.|
 |`?prev`|Shift queue back by 1.|
