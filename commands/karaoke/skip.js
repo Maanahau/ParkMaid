@@ -10,6 +10,7 @@ module.exports = class SkipCommand extends Command {
 			memberName: 'skip',
 			description: 'Shift your position back by one position.',
             guildOnly: true,
+            argsPromptLimit: 0,
             throttling:{
                 usages: 2,
                 duration: 10,

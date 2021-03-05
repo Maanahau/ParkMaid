@@ -10,6 +10,7 @@ module.exports = class StartCommand extends Command {
 			memberName: 'start',
 			description: 'Start a new karaoke session.',
             guildOnly: true,
+            argsPromptLimit: 0,
             throttling:{
                 usages: 2,
                 duration: 10,

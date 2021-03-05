@@ -10,6 +10,7 @@ module.exports = class JoinCommand extends Command {
 			memberName: 'join',
 			description: 'Join the current karaoke session.',
             guildOnly: true,
+            argsPromptLimit: 0,
             throttling:{
                 usages: 2,
                 duration: 10,

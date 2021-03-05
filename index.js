@@ -22,7 +22,7 @@ client.registry
 	.registerDefaultGroups()
 	.registerDefaultCommands({
         unknownCommand:false,
-        help:false,
+        ping:false,
     })
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
@@ -42,7 +42,7 @@ client.dispatcher.addInhibitor(message => {
             }
         }
     //mods can use every command everywhere
-    if(isMod) return false;
+    if(isMod || message.command.name === 'help') return false;
     //role check
     let isRoleAllowed = false;
     if(message.command.group.name === 'admin'){
@@ -95,6 +95,17 @@ client.once('ready', async () => {
         await database.guildCache[guild.discordid].asyncConstructor(guild);
     }
     console.log(`Guild cache ready`);
+
+    prefixLoop:
+        for(let guild of client.guilds.cache.array()){
+            for(let g of knownGuilds){
+                if(g.discordid === guild.id){
+                    guild.commandPrefix = g.prefix;
+                    continue prefixLoop;
+                }
+            }
+        }
+    console.log(`Prefix loaded.`);
     console.log(`Bot is ready.`);
 });
 
@@ -130,6 +141,7 @@ client.on('guildDelete', async guild => {
 });
 
 client.on('commandPrefixChange', async (guild, prefix) => {
+    if(database.guildCache[guild.id].prefix === prefix) return;
     //cache
     database.guildCache[guild.id].prefix = prefix;
     //database

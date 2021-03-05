@@ -9,6 +9,7 @@ module.exports = class EndCommand extends Command {
 			memberName: 'end',
 			description: 'Stop the current karaoke session.',
             guildOnly: true,
+            argsPromptLimit: 0,
             throttling:{
                 usages: 2,
                 duration: 10,
@@ -20,13 +21,9 @@ module.exports = class EndCommand extends Command {
         if(Karaoke.currentSessions){
             for (let session of Karaoke.currentSessions){
                 if(session.guild_id === message.guild.id){
-                    if(session.host_id === message.author.id){
-                        const index = Karaoke.currentSessions.indexOf(session);
-                        Karaoke.currentSessions.splice(index, 1);
-                        return message.say('Session stopped.');
-                    }else{
-                        return message.say('Only the host can stop the current session.');
-                    }
+                    const index = Karaoke.currentSessions.indexOf(session);
+                    Karaoke.currentSessions.splice(index, 1);
+                    return message.say('Session stopped.');
                 }
             }
             return message.say('No active queue.');

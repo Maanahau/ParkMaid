@@ -10,6 +10,7 @@ module.exports = class RemoveCommand extends Command {
 			memberName: 'remove',
 			description: 'Remove the current karaoke session.',
             guildOnly: true,
+            argsPromptLimit: 0,
             throttling:{
                 usages: 2,
                 duration: 10,
@@ -33,18 +34,14 @@ module.exports = class RemoveCommand extends Command {
         if(Karaoke.currentSessions){
             for (let session of Karaoke.currentSessions){
                 if(session.guild_id === message.guild.id){
-                    if(session.host_id === message.author.id){
-                        for(let x of session.queue){
-                            if(user.id === x[0]){
-                                session.queue.splice(session.queue.indexOf(x), 1);
-                                message.say('User removed from the queue');
-                                return this.client.registry.commands.get('queue').run(message);
-                            }
+                    for(let x of session.queue){
+                        if(user.id === x[0]){
+                            session.queue.splice(session.queue.indexOf(x), 1);
+                            message.say('User removed from the queue');
+                            return this.client.registry.commands.get('queue').run(message);
                         }
-                        return message.say('User not in the queue.');
-                    }else{
-                        return message.channel.send('Only the host can remove people from the queue.');
                     }
+                    return message.say('User not in the queue.');
                 }
             }
             return message.channel.send('No active queue.');

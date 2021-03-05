@@ -10,6 +10,7 @@ module.exports = class NextCommand extends Command {
 			memberName: 'next',
 			description: 'Shift forward the current queue.',
             guildOnly: true,
+            argsPromptLimit: 0,
             throttling:{
                 usages: 2,
                 duration: 10,
@@ -22,13 +23,9 @@ module.exports = class NextCommand extends Command {
             for (let session of Karaoke.currentSessions){
                 if(session.guild_id === message.guild.id){
                     if(session.queue.length){
-                        if(session.host_id === message.author.id){
-                            const first = session.queue.shift();
-                            if(first[1]) session.queue.push(first);
-                            return this.client.registry.commands.get('queue').run(message);
-                        }else{
-                            return message.say('Only the host can shift the queue.');
-                        }
+                        const first = session.queue.shift();
+                        if(first[1]) session.queue.push(first);
+                        return this.client.registry.commands.get('queue').run(message);
                     }else return message.say('The queue is empty.');
                 }
             }

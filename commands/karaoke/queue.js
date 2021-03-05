@@ -11,6 +11,7 @@ module.exports = class QueueCommand extends Command {
 			memberName: 'queue',
 			description: 'Show the current queue.',
             guildOnly: true,
+            argsPromptLimit: 0,
             throttling:{
                 usages: 2,
                 duration: 10,
@@ -35,10 +36,9 @@ module.exports = class QueueCommand extends Command {
                             field += `**${i+1} -** <@${session.queue[i++][0]}>\n`;
                         }
                         if(field) queueEmbed.addField('Queue:', field);
-                        queueEmbed.setFooter(`Current host: ${session.host_tag}`);
                         return message.embed(queueEmbed);
                     }else{
-                        queueEmbed.addField('Queue:','Empty').setFooter(`Current host: ${session.host_tag}`);
+                        queueEmbed.addField('Queue:','Empty');
                         return message.embed(queueEmbed);
                     }
                 }

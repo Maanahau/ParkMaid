@@ -10,6 +10,7 @@ module.exports = class LeaveCommand extends Command {
 			memberName: 'leave',
 			description: 'Leave the current karaoke session.',
             guildOnly: true,
+            argsPromptLimit: 0,
             throttling:{
                 usages: 2,
                 duration: 10,

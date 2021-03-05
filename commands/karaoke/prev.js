@@ -10,6 +10,7 @@ module.exports = class PrevCommand extends Command {
 			memberName: 'prev',
 			description: 'Shift backward the current queue.',
             guildOnly: true,
+            argsPromptLimit: 0,
             throttling:{
                 usages: 2,
                 duration: 10,
@@ -22,12 +23,8 @@ module.exports = class PrevCommand extends Command {
             for (let session of Karaoke.currentSessions){
                 if(session.guild_id === message.guild.id){
                     if(session.queue.length){
-                        if(session.host_id === message.author.id){
-                            session.queue.unshift(session.queue.pop());
-                            return this.client.registry.commands.get('queue').run(message);
-                        }else{
-                            return message.say('Only the host can shift the queue.');
-                        }
+                        session.queue.unshift(session.queue.pop());
+                        return this.client.registry.commands.get('queue').run(message);
                     }else return message.say('The queue is empty.');
                 }
             }
