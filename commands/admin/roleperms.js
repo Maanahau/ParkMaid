@@ -61,13 +61,21 @@ module.exports = class AllowroleCommand extends Command {
 
                 //cache
                 if(!allowedRoles[role.id])
-                    allowedRoles[role.id] = new Array();
+                    allowedRoles[role.id] = [];
                 allowedRoles[role.id].push(group.name);
                 //database
-                let newRole = await database.allowedRole.create({
-                    discordid:role.id,
-                    guildId:guild.id,
+                let newRole = await database.allowedRole.findOne({
+                    where:{
+                        discordid:role.id,
+                        guildId:guild.id,
+                    },
                 });
+                if(!newRole){
+                    newRole = await database.allowedRole.create({
+                        discordid:role.id,
+                        guildId:guild.id,
+                    });
+                }
                 await newRole.addCommandGroup(commandGroup);
                 return message.say(`Role \`${role.name}\` is now allowed to use \`${group.name}\` commands.`);
 

@@ -23,7 +23,7 @@ module.exports = class QueueCommand extends Command {
         const queueEmbed = new Discord.MessageEmbed()
             .setColor('#f47fff')
             .setTitle('Karaoke')
-            .setDescription('Use `?join` to join the queue, or `?join once` to join for just a song.');
+            .setDescription('Use `?join` to join the queue, or `?join once` to join for just a song.\nUse `?leave` to leave the queue.');
 
         if(Karaoke.currentSessions){
             for (let session of Karaoke.currentSessions){

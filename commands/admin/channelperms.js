@@ -61,13 +61,21 @@ module.exports = class AllowchannelCommand extends Command {
 
                 //cache
                 if(!allowedChannels[channel.id])
-                    allowedChannels[channel.id] = new Array();
+                    allowedChannels[channel.id] = [];
                 allowedChannels[channel.id].push(group.name);
                 //database
-                let newChannel = await database.allowedChannel.create({
-                    discordid:channel.id,
-                    guildId:guild.id,
+                let newChannel = await database.allowedChannel.findOne({
+                    where:{
+                        discordid:channel.id,
+                        guildId:guild.id,
+                    },
                 });
+                if(!newChannel){
+                    newChannel = await database.allowedChannel.create({
+                        discordid:channel.id,
+                        guildId:guild.id,
+                    });
+                }
                 await newChannel.addCommandGroup(commandGroup);
                 return message.say(`\`${group.name}\` commands are now allowed in <#${channel.id}>.`);
 
