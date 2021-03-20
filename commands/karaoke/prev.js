@@ -23,7 +23,9 @@ module.exports = class PrevCommand extends Command {
             for (let session of Karaoke.currentSessions){
                 if(session.guild_id === message.guild.id){
                     if(session.queue.length){
-                        session.queue.unshift(session.queue.pop());
+                        let last = session.queue.pop();
+                        session.queue.unshift(last);
+                        session.stats.decreaseSongs(last[0])
                         return this.client.registry.commands.get('queue').run(message);
                     }else return message.say('The queue is empty.');
                 }

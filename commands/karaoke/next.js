@@ -25,6 +25,7 @@ module.exports = class NextCommand extends Command {
                     if(session.queue.length){
                         const first = session.queue.shift();
                         if(first[1]) session.queue.push(first);
+                        session.stats.increaseSongs(first[0]);
                         return this.client.registry.commands.get('queue').run(message);
                     }else return message.say('The queue is empty.');
                 }
