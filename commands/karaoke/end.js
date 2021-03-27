@@ -26,7 +26,10 @@ module.exports = class EndCommand extends Command {
                         let stats = Karaoke.currentSessions[index].stats.getStatsEmbed();
                         Karaoke.currentSessions.splice(index, 1);
                         message.say('Session ended.');
-                        return message.embed(stats);
+                        if(stats)
+                            return message.embed(stats);
+                        else
+                            return
                     }
                 }
                 return message.say('No active queue.');
