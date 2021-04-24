@@ -15,7 +15,7 @@ Before starting your bot, you will need to create a file named `config.json`, wh
 
     {
         "TOKEN" : "your bot token here",
-        "OWNER_ID": "your discord id here",
+        "OWNER_ID": "your discord user id here",
     
         "DATABASE" : "name of your database",
         "USER": "user",
