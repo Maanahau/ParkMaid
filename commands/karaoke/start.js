@@ -32,6 +32,7 @@ module.exports = class StartCommand extends Command {
         }
         //create new queue
         Karaoke.currentSessions.push(new Karaoke.Session(message));
+        console.log(`New Karaoke session started by ${message.author.tag} at ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })}`);
         return message.say('Karaoke started!');
     }
 };

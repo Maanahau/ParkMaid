@@ -26,6 +26,7 @@ module.exports = class EndCommand extends Command {
                         let stats = Karaoke.currentSessions[index].stats.getStatsEmbed();
                         Karaoke.currentSessions.splice(index, 1);
                         message.say('Session ended.');
+                        console.log(`New Karaoke session ended by ${message.author.tag} at ${new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })}`);
                         if(stats)
                             return message.embed(stats);
                         else

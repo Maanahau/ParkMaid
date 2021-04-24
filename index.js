@@ -15,9 +15,11 @@ module.exports.client = client;
 client.registry
 	.registerDefaultTypes()
 	.registerGroups([
+        ['owner','owner'],
 		['admin', 'admin'],
 		['karaoke', 'karaoke'],
         ['karaoke_host', 'karaoke_host'],
+        ['misc', 'misc'],
 	])
 	.registerDefaultGroups()
 	.registerDefaultCommands({
@@ -27,9 +29,9 @@ client.registry
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.dispatcher.addInhibitor(message => {
-    //block commands in dms
+    //no restrictions in dms
     if(message.channel.type === 'dm')
-        return 'dm_channel';
+        return false;
     //check if user has a mod role
     let isMod = false;
     modLoop: 
