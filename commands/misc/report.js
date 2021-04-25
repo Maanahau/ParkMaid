@@ -46,7 +46,8 @@ module.exports = class ReportCommand extends Command {
             let channel = message.client.channels.cache.get(config.REPORT_CHANNEL);
             console.log(`Report delivered [${now}]`);
             channel.send(e);
-            return message.say(`Report sent.`);
+            message.say(`The following report has been sent:`);
+            return message.embed(e);
         }catch(error){
             console.log(error);
         }

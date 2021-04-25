@@ -73,7 +73,8 @@ client.dispatcher.addInhibitor(message => {
 client.once('ready', async () => {
     await database.syncdb(client);
     console.log(`Logged in as ${client.user.tag}.`);
-    client.user.setActivity('Karaoke');
+    if(config.ACTIVITY)
+        client.user.setActivity(config.ACTIVITY);
 
     //check guilds in database 
     let knownGuilds = await database.guild.findAll();
