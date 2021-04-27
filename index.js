@@ -29,6 +29,9 @@ client.registry
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.dispatcher.addInhibitor(message => {
+    //unknown command check
+    if(!message.command)
+        return 'no_command';
     //no restrictions in dms
     if(message.channel.type === 'dm')
         return false;

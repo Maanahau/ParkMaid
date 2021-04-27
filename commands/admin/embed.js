@@ -9,6 +9,7 @@ module.exports = class EmbedCommand extends Command {
 			memberName: 'embed',
 			description: 'Post embed in #channel',
             guildOnly: true,
+            userPermissions: ["MANAGE_GUILD"],
             throttling:{
                 usages: 2,
                 duration: 10,

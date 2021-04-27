@@ -9,6 +9,7 @@ module.exports = class AllowchannelCommand extends Command {
 			memberName: 'channelperms',
 			description: 'Allow a group of commands to be used in #channel.',
             guildOnly: true,
+            userPermissions: ["MANAGE_GUILD"],
             throttling:{
                 usages: 2,
                 duration: 10,

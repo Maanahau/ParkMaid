@@ -10,6 +10,7 @@ module.exports = class ShowCommand extends Command {
 			memberName: 'showperms',
 			description: 'Show permissions for mods|roles|channels.',
             guildOnly: true,
+            userPermissions: ["MANAGE_GUILD"],
             throttling:{
                 usages: 2,
                 duration: 10,

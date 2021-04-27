@@ -9,7 +9,9 @@ module.exports = class ReportCommand extends Command {
 			name: 'report',
 			group: 'misc',
 			memberName: 'report',
-			description: 'Send anonymous message to the mod team',
+			description: `Send an anonymous message to the mod team. This command can only be used through 
+            ParkMaid\'s direct messages, so that your anonymity is protected. Example: \`report i don't like ParkMaid\` 
+            will send \`i don\'t like ParkMaid\` to the moderators.`,
             guildOnly: false,
             throttling:{
                 usages: 1,

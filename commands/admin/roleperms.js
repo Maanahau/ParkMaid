@@ -9,6 +9,7 @@ module.exports = class AllowroleCommand extends Command {
 			memberName: 'roleperms',
 			description: 'Allow group of commands for @role.',
             guildOnly: true,
+            userPermissions: ["MANAGE_GUILD"],
             throttling:{
                 usages: 2,
                 duration: 10,
