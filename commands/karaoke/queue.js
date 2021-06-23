@@ -26,7 +26,7 @@ module.exports = class QueueCommand extends Command {
             .setDescription('Use `?join` to join the queue, or `?join once` to join for just a song.\nUse `?leave` to leave the queue.');
 
         if(Karaoke.currentSessions){
-            for (let session of Karaoke.currentSessions){
+            for(let session of Karaoke.currentSessions){
                 if(session.guild_id === message.guild.id){
                     if(session.queue.length){
                         queueEmbed.addField('**Next singing:**', `**1 -** <@${session.queue[0][0]}>`);

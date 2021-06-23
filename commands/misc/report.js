@@ -1,7 +1,11 @@
 const Discord = require('discord.js');
 const { Command } = require('discord.js-commando');
+const AES = require('crypto-js/aes');
+
 const fs = require('fs');
 const path = require('path');
+
+const database = require('../../lib/database.js');
 
 module.exports = class ReportCommand extends Command {
 	constructor(client) {
@@ -39,14 +43,24 @@ module.exports = class ReportCommand extends Command {
 
             let now = new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
 
+            //generate report id for response function
+            let reportID = Date.now();
+
+            //insert report in the database
+            let reportData = await database.report.create({
+                reportid: reportID,
+                message: report,
+                userid: message.author.id,
+            });
+
             let e = new Discord.MessageEmbed()
                 .setColor('#c7c7c3')
                 .setTitle('Anonymous report')
                 .setDescription(report)
-                .setFooter(now);
+                .setFooter(now + ' - Report ID: ' + reportID);
 
             let channel = message.client.channels.cache.get(config.REPORT_CHANNEL);
-            console.log(`Report delivered [${now}]`);
+            console.log(`Report sent [${now}]`);
             channel.send(e);
             message.say(`The following report has been sent:`);
             return message.embed(e);

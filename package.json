@@ -1,6 +1,6 @@
 {
   "name": "parkmaid",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Discord bot for karaoke",
   "main": "index.js",
   "scripts": {
@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Waldinflesh/ParkMaid#readme",
   "dependencies": {
+    "crypto-js": "^4.0.0",
     "discord.js": "^12.5.1",
     "discord.js-commando": "^0.12.2",
     "humanize-duration": "^3.25.1",
