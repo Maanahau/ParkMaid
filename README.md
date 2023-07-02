@@ -4,7 +4,7 @@ This bot will keep track of the queue during karaoke, allowing people to join, l
 ## Installing
 To install everything needed, run the following commands:
 
-    $ git clone https://github.com/Waldinflesh/ParkMaid.git
+    $ git clone https://github.com/Maanahau/ParkMaid.git
     $ cd ParkMaid
     $ npm install
 
