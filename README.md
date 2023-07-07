@@ -62,7 +62,7 @@ Your bot has no permissions set at the moment. The first thing you want to do is
 |-|-|-|
 |`?start`|Start a karaoke session.| |
 |`?end`|Stop the current karaoke session.| |
-|`?add <@user> [top\|bottom\|number] [once]`|Add `@user` to the queue. If a position is not given, they will be placed at the bottom. Using `?add` on a user already in queue will result in the user being moved to the given position.|`?add @Waldinflesh 5 once`|
-|`?remove <@user>`|Remove `@user` from the queue.|`?remove @Waldinflesh`|
+|`?add <@user> [top\|bottom\|number] [once]`|Add `@user` to the queue. If a position is not given, they will be placed at the bottom. Using `?add` on a user already in queue will result in the user being moved to the given position.|`?add @Maanahau 5 once`|
+|`?remove <@user>`|Remove `@user` from the queue.|`?remove @Maanahau`|
 |`?next`|Shift queue forward by 1.|
 |`?prev`|Shift queue back by 1.|
