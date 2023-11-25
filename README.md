@@ -1,3 +1,5 @@
+# NOTICE: This bot doesn't work anymore in the current version of Discord.
+
 # ParkMaid
 This bot will keep track of the queue during karaoke, allowing people to join, leave or show the current queue with a simple command.
 
